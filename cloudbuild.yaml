@@ -4,20 +4,21 @@ steps:
     id: 'Install Terraform'
     entrypoint: 'sh'
     args: ['-c', 'terraform version']
+    dir: './'  # Current directory
 
   # Step 2: Initialize Terraform
   - name: 'hashicorp/terraform:1.5.3'
     id: 'Terraform Init'
     entrypoint: 'sh'
     args: ['-c', 'terraform init']
-    dir: './gorestapi'  # Adjust to the directory where your Terraform files are located
+    dir: './'  # Current directory
 
   # Step 3: Plan the Terraform deployment
   - name: 'hashicorp/terraform:1.5.3'
     id: 'Terraform Plan'
     entrypoint: 'sh'
     args: ['-c', 'terraform plan -out=tfplan']
-    dir: './terraform'  # Adjust to the directory where your Terraform files are located
+    dir: './'  # Current directory
     waitFor: ['Terraform Init']
 
   # Step 4: Apply the Terraform configuration
@@ -25,7 +26,7 @@ steps:
     id: 'Terraform Apply'
     entrypoint: 'sh'
     args: ['-c', 'terraform apply -auto-approve tfplan']
-    dir: './terraform'  # Adjust to the directory where your Terraform files are located
+    dir: './'  # Current directory
     waitFor: ['Terraform Plan']
 
 timeout: '1200s'
