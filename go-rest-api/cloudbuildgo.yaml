@@ -12,13 +12,27 @@ steps:
     args: ['push', 'gcr.io/$PROJECT_ID/go-rest-api:latest']
     waitFor: ['Build']
 
-  # Step 3: Deploy the application to Kubernetes using kubectl
+  # Step 3: Set up the Kubernetes cluster context
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'Set Cluster Context'
+    args:
+      - 'container'
+      - 'clusters'
+      - 'get-credentials'
+      - 'my-go-rest-api-cluster'
+      - '--zone'
+      - 'us-central1-a'
+    env:
+      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
+    waitFor: ['Push']
+
+  # Step 4: Deploy the application to Kubernetes using kubectl
   - name: 'gcr.io/cloud-builders/kubectl'
     id: 'Deploy'
     args: ['apply', '-f', 'go-rest-api/k8s/deployment.yaml']
-    waitFor: ['Push']
+    waitFor: ['Set Cluster Context']
 
-  # Step 4: Apply the Kubernetes service configuration
+  # Step 5: Apply the Kubernetes service configuration
   - name: 'gcr.io/cloud-builders/kubectl'
     id: 'Deploy Service'
     args: ['apply', '-f', 'go-rest-api/k8s/service.yaml']
