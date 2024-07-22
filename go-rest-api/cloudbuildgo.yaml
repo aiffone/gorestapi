@@ -45,6 +45,6 @@ options:
 
 # Define substitutions for dynamic values
 substitutions:
-  _PROJECT_ID: 'playground-s-11-5f7d5dd3'  # Replace with your GCP project ID
+  _PROJECT_ID: 'playground-s-11-5104e2ea'  # Replace with your GCP project ID
   _CLUSTER_NAME: 'my-go-rest-api-cluster'  # Replace with your cluster name
   _ZONE: 'us-central1-a'  # Replace with your cluster zone
