@@ -43,7 +43,7 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 }
 
-# Enable monitoring and logging
+# Enable monitoring and logging APIs
 resource "google_project_service" "monitoring" {
   project = "playground-s-11-5f7d5dd3"
   service = "monitoring.googleapis.com"
