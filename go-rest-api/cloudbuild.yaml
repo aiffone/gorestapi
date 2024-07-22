@@ -1,0 +1,27 @@
+steps:
+  # Step 1: Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Build'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/go-rest-api:latest', '.']
+    waitFor: ['-']
+
+  # Step 2: Push the Docker image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Push'
+    args: ['push', 'gcr.io/$PROJECT_ID/go-rest-api:latest']
+    waitFor: ['Build']
+
+  # Step 3: Deploy to Kubernetes using kubectl
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: 'Deploy'
+    args: ['apply', '-f', 'k8s/deployment.yaml']
+    waitFor: ['Push']
+
+  # Step 4: Apply the Kubernetes service configuration
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: 'Deploy Service'
+    args: ['apply', '-f', 'k8s/service.yaml']
+    waitFor: ['Deploy']
+
+images:
+  - 'gcr.io/$PROJECT_ID/go-rest-api:latest'
