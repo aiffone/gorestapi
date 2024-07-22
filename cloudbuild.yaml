@@ -15,8 +15,10 @@ steps:
   # Step 3: Debug step to verify environment variables
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'Verify Environment Variables'
+    entrypoint: 'sh'
     args:
-      - 'env'
+      - '-c'
+      - 'echo "PROJECT_ID: ${_PROJECT_ID}"; echo "CLUSTER_NAME: ${_CLUSTER_NAME}"; echo "ZONE: ${_ZONE}"'
     waitFor: ['Push']
 
   # Step 4: Set up the Kubernetes cluster context
@@ -37,8 +39,8 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'Verify Cluster Context'
     args:
-      - 'container'
-      - 'clusters'
+      - 'config'
+      - 'configurations'
       - 'list'
     waitFor: ['Set Cluster Context']
 
