@@ -1,7 +1,3 @@
-provider "google" {
-  project = "playground-s-11-5f7d5dd3"
-  region  = "us-central1"  # Adjust as necessary
-}
 
 # Define a list of APIs to be enabled
 locals {
