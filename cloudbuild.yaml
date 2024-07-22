@@ -3,7 +3,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Build'
     args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/go-rest-api:latest', '.']
-    dir: 'go-rest-api'  # Directory where your Dockerfile and Go application files are located
+    dir: 'gorestapi'  # Directory where your Dockerfile and Go application files are located
     waitFor: ['-']
 
   # Step 2: Push the Docker image to Google Container Registry
