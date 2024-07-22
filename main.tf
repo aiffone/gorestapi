@@ -1,5 +1,5 @@
 provider "google" {
-  project = "playground-s-11-5f7d5dd3"
+  project = "playground-s-11-5104e2ea"
   region  = "us-central1"
 }
 
@@ -31,11 +31,11 @@ resource "google_container_cluster" "primary" {
 
 # Enable monitoring and logging APIs
 resource "google_project_service" "monitoring" {
-  project = "playground-s-11-5f7d5dd3"
+  project = "playground-s-11-5104e2ea"
   service = "monitoring.googleapis.com"
 }
 
 resource "google_project_service" "logging" {
-  project = "playground-s-11-5f7d5dd3"
+  project = "playground-s-11-5104e2ea"
   service = "logging.googleapis.com"
 }
