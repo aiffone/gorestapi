@@ -2,14 +2,14 @@ steps:
   # Step 1: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Build'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/go-rest-api:latest', '.']
+    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/go-rest-api:latest', '.']
     dir: 'go-rest-api'  # Directory where your Dockerfile and Go application files are located
     waitFor: ['-']
 
   # Step 2: Push the Docker image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Push'
-    args: ['push', 'gcr.io/$PROJECT_ID/go-rest-api:latest']
+    args: ['push', 'gcr.io/${_PROJECT_ID}/go-rest-api:latest']
     waitFor: ['Build']
 
   # Step 3: Set up the Kubernetes cluster context
@@ -19,11 +19,11 @@ steps:
       - 'container'
       - 'clusters'
       - 'get-credentials'
-      - 'my-go-rest-api-cluster'
+      - '${_CLUSTER_NAME}'
       - '--zone'
-      - 'us-central1-a'
+      - '${_ZONE}'
     env:
-      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
+      - 'CLOUDSDK_CORE_PROJECT=${_PROJECT_ID}'
     waitFor: ['Push']
 
   # Step 4: Deploy the application to Kubernetes using kubectl
@@ -42,3 +42,9 @@ timeout: '1200s'
 
 options:
   logging: CLOUD_LOGGING_ONLY
+
+# Define substitutions for dynamic values
+substitutions:
+  _PROJECT_ID: 'playground-s-11-5f7d5dd3'  # Replace with your GCP project ID
+  _CLUSTER_NAME: 'my-go-rest-api-cluster'  # Replace with your cluster name
+  _ZONE: 'us-central1-a'  # Replace with your cluster zone
