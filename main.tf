@@ -28,20 +28,6 @@ resource "google_container_cluster" "primary" {
   }
 }
 
-# Define the node pool for the cluster
-resource "google_container_node_pool" "primary_nodes" {
-  name               = "primary-node-pool"
-  location           = "us-central1-a"
-  cluster            = google_container_cluster.primary.name
-  initial_node_count = 1
-
-  node_config {
-    machine_type = "e2-micro"
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform",
-    ]
-  }
-}
 
 # Enable monitoring and logging APIs
 resource "google_project_service" "monitoring" {
